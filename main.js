@@ -1,6 +1,6 @@
 import kernel from "./src/Sistema/Kernel";
 import Menu from "./src/Programas/Menu";
-import Folder from "./src/Programas/folder";
+import Folder from "./src/Programas/Folder";
 import vsCode from "./src/Programas/vsCode";
 
 window.addEventListener('load',()=>{
