@@ -7,6 +7,7 @@ export default class Aplicacion{
     #dock = kernel.DOCK;
     #capturadora = new Capturadora;
     #listaVentanas = new Map;
+    #comando;
     #ventana_unica;
     #ventana_principal;
     #ventana_actual;
@@ -15,9 +16,10 @@ export default class Aplicacion{
     #nombreApp;
     #configVanie;
 
-    constructor(nombreAplicacion,icono,anclado = false){
+    constructor(comando,nombreAplicacion,icono,anclado = false){
+        this.#comando = comando;
         this.#nombreApp = nombreAplicacion;
-        this.#lanzador = new Lanzador(nombreAplicacion,icono,anclado);
+        this.#lanzador = new Lanzador(comando,icono,anclado);
         this.#lanzador.ventanas = this.#listaVentanas;
         this.#capturadora.conectarLanzador(this.#lanzador);
         this.#click();}
@@ -29,7 +31,8 @@ export default class Aplicacion{
         if(!this.ventanaPredeterminada) return this.#listaVentanas.size;
         const ventanas = this.#listaVentanas.size - (this.ventanaPredeterminada.estaCerrado ? 1 : 0);
         return ventanas < 0 ? 0 : ventanas;}
-    get nombre(){return this.#nombreApp;}
+    get comando(){return this.#comando;}
+    get id(){return this.#nombreApp;}
 
     forEach(funcion){this.#listaVentanas.forEach(funcion)}
 
@@ -66,7 +69,7 @@ export default class Aplicacion{
             throw(`Conflicto de asignacion de ventana ${v[tipo]}`);
         this.#ventana_actual = ventana;
         
-        const id = !tipo ? `${this.#nombreApp}_${this.#contador++}`: v[tipo];
+        const id = !tipo ? `${this.#comando}_${this.#contador++}`: v[tipo];
         ventana.identificador = id;
         if(tipo == 1) this.#ventana_unica = ventana;
         else if(tipo == 2) this.#ventana_principal = ventana;
@@ -136,7 +139,7 @@ export default class Aplicacion{
                 this.#capturadora.interruptorMiniaturas();
                 this.#dock.interruptor(e);
                 }
-            else{
+            else{/*
                 const vPrincipal = this.ventanaPredeterminada;
                 this.#dock.activar();
                 if(vPrincipal){
@@ -148,5 +151,22 @@ export default class Aplicacion{
                             if(ventana.identificador != vPrincipal.identificador)
                                 this.interruptorVentana(ventana);});}}
                 else{
-                    this.interruptorVentana(...this.#listaVentanas.keys());}
-            }});}}
+                    this.interruptorVentana(...this.#listaVentanas.keys());}*/
+                this.abrir();
+            }
+        });}
+        
+    abrir(){
+        const vPrincipal = this.ventanaPredeterminada;
+        if(vPrincipal){
+            this.#dock.activar();
+            if(vPrincipal.estaAbierto)
+                this.interruptorVentana(vPrincipal);
+            else if(this.ventanaUnica) this.ventanaUnica.abrir();
+            else{
+                this.#listaVentanas.forEach(ventana=>{
+                    if(ventana.identificador != vPrincipal.identificador)
+                        this.interruptorVentana(ventana);});}}
+        else if (this.ventanasDisponibles == 1){
+            this.#dock.activar();
+            this.interruptorVentana(...this.#listaVentanas.keys());}}}

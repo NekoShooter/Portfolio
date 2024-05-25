@@ -1,7 +1,7 @@
 import kernel from "./Kernel";
 
 export default class Dock{
-    #contenedor; #padre; #activo = true; #fnDock; #medidaDock; #mapLanzador = new Map; #registros = 0;
+    #contenedor; #padre; #activo = true; #medidaDock; #mapLanzador = new Map; #registros = 0;
 
     constructor(padre = undefined,configuracion){
         if(!(padre instanceof HTMLElement)) throw('Asignacion de padre obligatoria');

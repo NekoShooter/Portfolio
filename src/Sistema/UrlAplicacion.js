@@ -6,11 +6,11 @@ export default class UrlAplicacion{
     #url;
     #nombreAplicacion;
 
-    constructor(nombre,ico,anclado = false){
+    constructor(comando,nombre,ico,anclado = false){
         if(typeof(nombre) != 'string' || nombre.trim() == '')
             throw ('el objeto necesita un nombre valido');
         this.#nombreAplicacion = nombre.trim()
-        this.#app = new Aplicacion(this.#nombreAplicacion,ico,anclado);}
+        this.#app = new Aplicacion(comando.trim(),this.#nombreAplicacion,ico,anclado);}
 
     set url(objetoURL){this.#url = objetoURL;}
     get url(){return this.#url;}
@@ -19,13 +19,15 @@ export default class UrlAplicacion{
     configurarVentana(funcion){this.#app.configurarVentana(funcion);}
 
     abrirInstancia(alias){
+        if(!alias || alias == this.#app.id){
+            this.#app.abrir();
+            return;}
         const ventanaNueva = new Vanie;
         const url = this.#url[alias][1];
         const titulo = this.#url[alias][0];
         ventanaNueva.cargarURL(url);
         const id = this.#app.agregarVentana(ventanaNueva,titulo);
-        ventanaNueva.abrir();
-        return id;}
+        ventanaNueva.abrir();}
 
     ventanaPrincipal(ventana,titulo){this.#app.agregarVentanaPrincipal(ventana,titulo);}
     ventanaUnica(ventana,titulo){this.#app.agregarVentanaUnica(ventana,titulo);}

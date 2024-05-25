@@ -1,13 +1,17 @@
 import { globalVanie } from "vanie";
 import BarraMac from "./DockMac";
+import Pwd from "./PWD";
 
 class Kernel{
     #os; #tema; #dock; #contenedorDock; #escritorio; #capturadoras = new Map; #registros = 0; miniaturasVisible; menu;
-    #adminApp = new Map;
+    #adminApp = new Map; #pwd = new Pwd('Inicio'); #aplicaciones = new Pwd('Aplicaciones');
     constructor(){
         this.ocultarTodasLasMiniaturas = this.ocultarTodasLasMiniaturas.bind(this);
         this.interruptorTema = this.interruptorTema.bind(this);
+        this.agregarNuevaRuta(this.#aplicaciones);
     }
+    agregarNuevaRuta(cd){if(cd instanceof Pwd) this.#pwd.agregarRuta(cd);}
+    get pwd(){return this.#pwd;}
 /**
  * @param {string} id id del elemento del Dom que sera el contenedor del escritorio
  * @returns {this}
@@ -64,7 +68,8 @@ class Kernel{
         this.#capturadoras.forEach(miniaturas=>{miniaturas.ocultarMiniaturas();});
     }
 
-    registrarApp(llave,App){
+    registrarApp(alias,llave,App){
+        this.#aplicaciones.nuevoArchivo([alias,llave,alias]);
         this.#adminApp.set(llave,App);}
         
     aplicacion(llave){
