@@ -1,11 +1,17 @@
 import kernel from "./Kernel";
-const ESTADO = {error:0,ok:1,vacio:3,abierto:4}
+const ESTADO = {error:0,ok:1,vacio:2,abierto:4}
 export { ESTADO }
 export default class Pwd{
     #dir = {}; #rutas =[];#origen; #app; #tipo = 0; #rutaActual; #historial; #nav; #cd = new Map;
     constructor(str){
         this.borrarHistorial();
         if(str) this.#origen = str;}
+    get copia(){
+        const copia = new Pwd(this.#origen);
+        copia.agregarArchivos(this.exec);
+        copia.agregarRuta(this.#cd);
+        return copia;}
+
     get rutaActual(){return this.#rutaActual;}
     get app(){return this.#app;}
     get admin(){return this.#dir;}
@@ -13,20 +19,26 @@ export default class Pwd{
     get rutas(){return this.#rutas;}
     get cd(){return this.#cd;}
     get archivos(){return this.#dir.archivos}
+    get claves(){return this.#dir.llaves;}
     get exec(){return this.#dir.exec;}
     get tipo(){return this.#tipo;}
     get historial(){return this.#historial;}
     get navegacion(){return this.#nav;}
 
     obtenerClaveArchivo(idx){return this.this.#dir.llaves?.[idx];}
-    obtenerNombreArchivo(llave){return this.#dir.exec?.[llave][0];}
+    obtenerNombreArchivo(llave){return this.#dir.exec?.[llave]?.[0];}
+    obtenerEjecutable(llave){return this.#dir.exec?.[llave]?.[1];}
 
     agregarRuta(pwd){
-        if(!(pwd instanceof Pwd)) return;
-        this.#tipo |= 1;
-        if(!this.#dir.rutas){this.#dir.cd = {};}
-        this.#rutas.push(pwd.origen);
-        this.#cd.set(pwd.origen,pwd);}
+        if(pwd instanceof Pwd){
+            this.#tipo |= 1;
+            this.#rutas.push(pwd.origen);
+            this.#cd.set(pwd.origen,pwd);}
+        else if(pwd instanceof Map) {
+            this.#tipo |= 1;
+            this.#rutas = [...pwd.keys()];
+            this.#cd = new Map(pwd);}}
+
 
     agregarArchivos(exec){
         if(!exec) return;
@@ -84,5 +96,12 @@ export default class Pwd{
                 const CD = cdActual.admin.llaves[cd];
                 if(!CD) return ESTADO.error;
                 cdActual.app.abrir(CD);
+                return ESTADO.abierto;}
+
+            else if(cdActual.tipo & 2){
+                const clave = cdActual.admin.llaves[cd];
+                const app =  kernel.aplicacion(clave);
+                if(!clave || !app) return ESTADO.error;
+                app.abrir();
                 return ESTADO.abierto;}}
         return ESTADO.error;}}

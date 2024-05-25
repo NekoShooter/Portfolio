@@ -1,3 +1,5 @@
+import kernel from "../Sistema/Kernel";
+
 const ICONOS = {
     mac:{
         menu:{
@@ -40,6 +42,12 @@ const ico = {
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
     py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png',
     code: './recursos/vscode.svg',
-}
-export {ICONOS , ico}
-export default ICONOS;
+    VBoxManage:'./recursos/iconos/vitual box.png'}
+
+function icon(alias){
+    const icono = ico[alias];
+    if(!icono) return ICONOS[kernel.os][alias].ico;
+    return icono;}
+    
+export {ICONOS , ico , icon}
+export default icon;

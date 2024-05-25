@@ -1,10 +1,11 @@
 import { globalVanie } from "vanie";
-import ICONOS from "../Data/iconos";
+import icon, { ICONOS } from "../Data/iconos";
 import Lanzador from "../Sistema/Lanzador"
 import kernel from "../Sistema/Kernel";
+import { elegirNodo, moldeArchivo, moldeElemento } from "../Data/moldes";
 
 export default class Menu{
-    #lanzador; #app;
+    #lanzador; #app; #estaCargado = false;
     constructor(){
         this.icono = ICONOS[kernel.os];
         this.#lanzador = new Lanzador(this.icono.menu.nombre,this.icono.menu.ico,true);
@@ -77,7 +78,24 @@ export default class Menu{
         this.#opacidadVentanas(0,'add');
         
         this.divMenu.style.zIndex = globalVanie.ventanasVisibles + 1;
-        kernel.DOCK.zIndex = this.divMenu.style.zIndex + 1;       
+        kernel.DOCK.zIndex = this.divMenu.style.zIndex + 1;
+
+        if(!this.#estaCargado){
+            this.#estaCargado = true;
+            const contenedor = this.estructura.get('app_contenedor');
+            const pwd = kernel.pwd.copia;
+            pwd.ir(0); // ir a la ruta Aplicaciones
+            for(let i = 0; i < pwd.rutaActual.claves.length; i++){
+                const acesoDirecto = moldeElemento(icon(pwd.rutaActual.claves[i]),pwd.rutaActual.obtenerNombreArchivo(pwd.rutaActual.claves[i]));
+                acesoDirecto.classList.add('folder');
+                contenedor.appendChild(acesoDirecto);}
+            contenedor.addEventListener('click',e=>{
+                
+                elegirNodo(e,contenedor,(i)=>{
+                    setTimeout(()=>{pwd.ir(i)},50);
+                });
+            });
+        }
         
         setTimeout(()=>{
             this.divMenu.classList.add(globalVanie.globalClass('animacion'));

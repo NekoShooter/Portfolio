@@ -4,14 +4,21 @@ import Pwd from "./PWD";
 
 class Kernel{
     #os; #tema; #dock; #contenedorDock; #escritorio; #capturadoras = new Map; #registros = 0; miniaturasVisible; menu;
-    #adminApp = new Map; #pwd = new Pwd('Inicio'); #aplicaciones = new Pwd('Aplicaciones');
+    #adminApp = new Map; #pwd = new Pwd('Inicio'); #aplicaciones = new Pwd('Aplicaciones'); #protector;
     constructor(){
         this.ocultarTodasLasMiniaturas = this.ocultarTodasLasMiniaturas.bind(this);
         this.interruptorTema = this.interruptorTema.bind(this);
-        this.agregarNuevaRuta(this.#aplicaciones);
-    }
+        this.agregarNuevaRuta(this.#aplicaciones);}
+
     agregarNuevaRuta(cd){if(cd instanceof Pwd) this.#pwd.agregarRuta(cd);}
     get pwd(){return this.#pwd;}
+
+    protectorPantalla(id){
+        this.#protector= document.getElementById(id);
+        this.#protector.classList.add(globalVanie.globalClass('bloqueado'));
+        this.#protector.addEventListener('mousemove',()=>{this.#dock.restaurar();});
+        return this;}
+    get protector(){return this.#protector;}
 /**
  * @param {string} id id del elemento del Dom que sera el contenedor del escritorio
  * @returns {this}
@@ -70,9 +77,10 @@ class Kernel{
 
     registrarApp(alias,llave,App){
         this.#aplicaciones.nuevoArchivo([alias,llave,alias]);
-        this.#adminApp.set(llave,App);}
+        this.#adminApp.set(alias,App);}
         
     aplicacion(llave){
+        if(!llave) return;
         return this.#adminApp.get(llave);}
 /**
  * @param {string} id id del elemento del Dom que sera el contenedor del dock de aplicaciones
@@ -168,5 +176,10 @@ globalVanie.addEventListener('registro',ventana=>{
     else
         ventana.justificarCabecera = 'start';
 });
+
+globalVanie.addEventListener('pulsar',()=>{
+    if(kernel.esMac) kernel.DOCK.restaurar();});
+
+
 
 export default kernel;

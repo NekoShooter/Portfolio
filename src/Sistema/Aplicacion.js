@@ -121,15 +121,7 @@ export default class Aplicacion{
     interruptorVentana(id){
         if(!id) return;
         const ventana = this.obtenerVentana((id instanceof Vanie)?id.identificador:id);
-        //if(!ventana || (/*this.#ocultarMenu() &&*/ (!ventana.estaMinimizado && !ventana.estaAbierto))) return;
-        
-        ventana?.abrir();
-        /*
-        if(ventana.estaCerrado){
-            this.#lanzador.apertura();
-            ventana.abrir();
-            kernel.DOCK.zIndex = globalVanie.ventanasVisibles + 2;}
-        else ventana.minimizar();*/}
+        ventana?.abrir();}
 
     #click(){
         this.#lanzador.addEventListener('click',e=>{
@@ -137,24 +129,9 @@ export default class Aplicacion{
             if(this.ventanasDisponibles > 1) {
                 if(!this.#capturadora.esVisible) kernel.capturadoras.forEach(cap=>cap.ocultarMiniaturas())
                 this.#capturadora.interruptorMiniaturas();
-                this.#dock.interruptor(e);
-                }
-            else{/*
-                const vPrincipal = this.ventanaPredeterminada;
-                this.#dock.activar();
-                if(vPrincipal){
-                    if(vPrincipal.estaAbierto)
-                        this.interruptorVentana(vPrincipal);
-                    else if(this.ventanaUnica) this.ventanaUnica.abrir();
-                    else{
-                        this.#listaVentanas.forEach(ventana=>{
-                            if(ventana.identificador != vPrincipal.identificador)
-                                this.interruptorVentana(ventana);});}}
-                else{
-                    this.interruptorVentana(...this.#listaVentanas.keys());}*/
-                this.abrir();
-            }
-        });}
+                this.#dock.interruptor(e);}
+
+            else this.abrir();});}
         
     abrir(){
         const vPrincipal = this.ventanaPredeterminada;

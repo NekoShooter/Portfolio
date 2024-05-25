@@ -24,16 +24,15 @@ export default class DockMac extends Dock{
         const listaHijos = super.nodos;
 
         this.contenedor.addEventListener('mouseenter',e=>{
-            if(!this.orientacion || !listaHijos?.length) return;
+            if(!listaHijos?.length) return;
+
+            protector.classList.remove(globalVanie.globalClass('bloqueado'));
+            protector.style.zIndex = globalVanie.ventanasVisibles + 2;
             this.zIndex = globalVanie.ventanasVisibles + 2;
+
             kernel.reacomodarMiniaturas(false);
 
-            globalVanie.ventanasForEach(ventana=>{
-                if(ventana.esSuperior)
-                    ventana.bloquearIframe(true);})
-
             const data = {mov: e.offsetX, tam:listaHijos.length * this.contenedor.lastChild.offsetWidth}
-
 
             this.#indiceActual = ~~((((data.mov * listaHijos.length)) / data.tam))|0;
 
@@ -102,7 +101,6 @@ export default class DockMac extends Dock{
     interruptor(e){this.#efectoLupa(e);}
 
     restaurar(){
-        globalVanie.ventanasForEach(ventana=>{
-            ventana.bloquearLienzo(false);});
-            this.nodos.forEach(div=>
-                {div.style.width = `${this.#medidaLanzador}px`});}}
+        kernel.protector.classList.add(globalVanie.globalClass('bloqueado'));
+        this.nodos.forEach(div=>
+            {div.style.width = `${this.#medidaLanzador}px`});}}
