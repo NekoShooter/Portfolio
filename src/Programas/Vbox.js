@@ -1,14 +1,15 @@
 import Vanie from 'vanie';
-import { ico } from '../Data/iconos';
 import Aplicacion from '../Sistema/Aplicacion'
-import kernel from '../Sistema/Kernel';
 import { moldeBipanel } from '../Data/moldes'
 
 export default class Vbox{
-    #app= new Aplicacion('VBoxManage','virtual box',ico.VBoxManage);;
+    #app= new Aplicacion(Vbox.comando,'virtual box',this.ico,this);;
     #ventana = new Vanie;
-    constructor(){
-        kernel.registrarApp(this.#app.comando,this.#app.id,this);}
+
+    static get comando(){return 'VBoxManage';}
+    get ico(){return './recursos/iconos/vitual box.png';}
+
+    constructor(){}
 
     #construir(){
         const [contenedor,derecho,izquierdo] = moldeBipanel();

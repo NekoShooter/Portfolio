@@ -1,28 +1,37 @@
 import { globalVanie } from "vanie";
 import BarraMac from "./DockMac";
-import Pwd from "./PWD";
+import Ruta from "./Ruta";
 
 class Kernel{
-    #os; #tema; #dock; #contenedorDock; #escritorio; #capturadoras = new Map; #registros = 0; miniaturasVisible; menu;
-    #adminApp = new Map; #pwd = new Pwd('Inicio'); #aplicaciones = new Pwd('Aplicaciones'); #protector;
+    #os;
+    #tema;
+    #dock;
+    #contenedorDock;
+    #escritorio;
+    #protector;
+    #capturadoras = new Map;
+    #registros = 0;
+    miniaturasVisible;
+    #adminApp = new Map;
+    #ruta = new Ruta('Inicio','home');
+    #aplicaciones = new Ruta('Aplicaciones','app');
+    
     constructor(){
         this.ocultarTodasLasMiniaturas = this.ocultarTodasLasMiniaturas.bind(this);
         this.interruptorTema = this.interruptorTema.bind(this);
         this.agregarNuevaRuta(this.#aplicaciones);}
 
-    agregarNuevaRuta(cd){if(cd instanceof Pwd) this.#pwd.agregarRuta(cd);}
-    get pwd(){return this.#pwd;}
+    agregarNuevaRuta(cd){this.#ruta.agregarRuta(cd);}
+    get ruta(){return this.#ruta;}
 
     protectorPantalla(id){
         this.#protector= document.getElementById(id);
         this.#protector.classList.add(globalVanie.globalClass('bloqueado'));
         this.#protector.addEventListener('mousemove',()=>{this.#dock.restaurar();});
         return this;}
+
     get protector(){return this.#protector;}
-/**
- * @param {string} id id del elemento del Dom que sera el contenedor del escritorio
- * @returns {this}
- */
+
     escritorio(id){
         if(typeof id == 'string' && id.trim() != '')
             this.#escritorio = document.getElementById(id);
@@ -43,8 +52,7 @@ class Kernel{
                     ocultar = false;
                     break;} }
         if(ocultar)
-            this.miniaturasVisible.ocultarMiniaturas();
-    }
+            this.miniaturasVisible.ocultarMiniaturas();}
 
     #estilar(){
         if(this.esMac && this.#escritorio){
@@ -57,8 +65,7 @@ class Kernel{
     reacomodarMiniaturas(ok){
         if(!this.miniaturasVisible) return;
         if(ok)this.miniaturasVisible.reacomodar();
-        else this.miniaturasVisible.acomodar();
-    }
+        else this.miniaturasVisible.acomodar();}
 
     registrarCapturadora(capturadora){
         if(!capturadora) return;
@@ -72,20 +79,16 @@ class Kernel{
         this.#capturadoras.delete(llave);}
 
     ocultarTodasLasMiniaturas(){
-        this.#capturadoras.forEach(miniaturas=>{miniaturas.ocultarMiniaturas();});
-    }
+        this.#capturadoras.forEach(miniaturas=>{miniaturas.ocultarMiniaturas();});}
 
-    registrarApp(alias,llave,App){
-        this.#aplicaciones.nuevoArchivo([alias,llave,alias]);
-        this.#adminApp.set(alias,App);}
+    registrarApp(comando,nombreAplicacion,App){
+        this.#aplicaciones.nuevoArchivo(nombreAplicacion,comando);
+        this.#adminApp.set(comando,App);}
         
     aplicacion(llave){
         if(!llave) return;
         return this.#adminApp.get(llave);}
-/**
- * @param {string} id id del elemento del Dom que sera el contenedor del dock de aplicaciones
- * @returns {this}
- */
+
     dock(id){
         if(typeof id== 'string' && id.trim() != '')
             this.#contenedorDock = document.getElementById(id);
@@ -101,13 +104,8 @@ class Kernel{
     #crearDock(){
         if(this.#dock || !this.#contenedorDock || !this.#os) return;
             
-        this.#dock = new {mac:BarraMac}[this.#os](this.#contenedorDock,this.data);
-    }
+        this.#dock = new {mac:BarraMac}[this.#os](this.#contenedorDock,this.data);}
 
-/**
- * @param {string} os El sistema operativo el cual se usara
- * @returns  {this}
- */
     SistemaOperativo(os){
         if(this.#os != os && typeof os == 'string' && ['windows','mac','linux'].includes(os)){
             if(!this.#tema){
@@ -121,46 +119,20 @@ class Kernel{
             this.#estilar();
             this.#crearDock();}
             
-        return this;
-    }
+        return this;}
 
-/**
- * alterna entre los temas oscuro y claro
- * @returns {this}
- */
     interruptorTema(){
         if(this.#tema) {
             this.#tema = {oscuro:'claro', claro:'oscuro'}[this.#tema];
             globalVanie.establecerBase(this.#os + '-' + this.#tema);}
-        return this;
-    }
+        return this;}
 
     get tema(){return this.#tema??'';}
     get os(){return this.#os??'';}
     get DOCK(){return this.#dock;}
     
-//#region validadores
-/**
- * retorna true si el sistema operativo y el tema en kernel son validos
- * @returns {boolean}
- */
-    get sistemaValido(){
-        return this.#tema && this.#os && globalVanie.esValido}
-/**
- * si los parametros de la barra son correctos retornara `true`
- * @returns {boolean}
- */
-    get dockValido(){
-        return this.#dock && this.#contenedorDock;
-    }
-/**
- * retorna `true` si todas las configuraciones son correctas:
- * + sistema: ✔
- * + barra: ✔
- * + menu: ✔
- * + dock: ✔
- * @returns {boolean}
- */
+    get sistemaValido(){return this.#tema && this.#os && globalVanie.esValido}
+    get dockValido(){return this.#dock && this.#contenedorDock;}
     get ok(){return this.sistemaValido && this.dockValido}
 
     get esLinux(){return this.#os == 'linux'}
@@ -179,7 +151,6 @@ globalVanie.addEventListener('registro',ventana=>{
 
 globalVanie.addEventListener('pulsar',()=>{
     if(kernel.esMac) kernel.DOCK.restaurar();});
-
 
 
 export default kernel;

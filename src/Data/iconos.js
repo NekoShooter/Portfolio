@@ -35,18 +35,27 @@ const ICONOS = {
             ico:'https://cdn.icon-icons.com/icons2/39/PNG/128/Newfile_page_document_empty_6315.png'
         }}
 };
+const miniIco = {
+    mac:{ home: 'https://cdn.icon-icons.com/icons2/602/PNG/512/Home_icon-icons.com_55890.png',
+        app:'https://cdn.icon-icons.com/icons2/622/PNG/512/app-store-apple-symbol_icon-icons.com_57185.png',
+        proyecto:'https://cdn.icon-icons.com/icons2/1481/PNG/512/41filedocumentprocess_102074.png',
+        video:'https://cdn.icon-icons.com/icons2/1933/PNG/512/iconfinder-video-film-movie-camera-multimedia-4593168_122276.png',
 
+    }
+}
 const ico = {
     js:'https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_js_official_icon_130509.png',
     c:'https://i.ibb.co/1Q10GFX/C.png',
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
     py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png',
-    code: './recursos/vscode.svg',
-    VBoxManage:'./recursos/iconos/vitual box.png'}
+   // [vsCode.comando]: './recursos/vscode.svg',
+   // VBoxManage:'./recursos/iconos/vitual box.png'
+}
 
 function icon(alias){
     const icono = ico[alias];
-    if(!icono) return ICONOS[kernel.os][alias].ico;
+    //if(!icono) return ICONOS[kernel.os][alias].ico;
+    if(!icono) return miniIco[kernel.os][alias];
     return icono;}
     
 export {ICONOS , ico , icon}

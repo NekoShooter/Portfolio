@@ -2,9 +2,17 @@ import kernel from "./Kernel";
 import { Dimension, Rect } from 'nauty';
 
 export default class Lanzador{
-    
-    #contenedor; #icono; #marcador;#nombre; #insertado = false; #medida = kernel.data.medidaLanzador;
-    #ruta_ico; #es_fijo = false; #transicion = 'all .3s ease'; #apertura = false; #llave; ventanas;
+    #contenedor;
+    #icono;
+    #marcador;
+    #nombre;
+    #insertado = false;
+    #medida = kernel.data.medidaLanzador;
+    #ruta_ico;
+    #es_fijo = false;
+    #transicion = 'all .3s ease';
+    #apertura = false;
+    #llave;
 
     get contenedor(){return this.#contenedor;}
     get icono(){return this.#icono;}

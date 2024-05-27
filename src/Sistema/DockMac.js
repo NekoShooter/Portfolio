@@ -3,7 +3,9 @@ import { globalVanie } from "vanie";
 import kernel from "./Kernel";
 
 export default class DockMac extends Dock{
-    #indiceActual = 0; #medidaLanzador;
+    #indiceActual = 0;
+    #medidaLanzador;
+    
     constructor(padre,configuracion){
         super(padre,configuracion);
         this.#medidaLanzador = configuracion.medidaLanzador;

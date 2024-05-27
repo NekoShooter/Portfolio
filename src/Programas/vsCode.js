@@ -1,26 +1,14 @@
-import kernel from "../Sistema/Kernel";
 import UrlAplicacion from "../Sistema/UrlAplicacion";
 import { ico } from "../Data/iconos";
-import Pwd from "../Sistema/PWD";
-
-const proyectos = new Pwd('Codigo');
-proyectos.agregarArchivos({
-    juego:['juego.js','https://github1s.com/NekoShooter/juego/blob/master/juego.js'],
-    coloref:['coloref.cpp','https://github1s.com/NekoShooter/ColoRef/blob/master/main.cpp'],
-    qreloj:['QWatch.py','https://github1s.com/NekoShooter/QWatch/blob/main/main.py'],
-    taimy:['Taimy.js','https://github1s.com/NekoShooter/Taimy/blob/master/Taimy.js'],
-    ansky:['Ansky.js','https://github1s.com/NekoShooter/Ansky/blob/master/Ansky.js'],
-    nauty:['Nauty.js','https://github1s.com/NekoShooter/Nauty/blob/master/Nauty.js'],
-    grafico:['grafico.js','https://github1s.com/NekoShooter/matJs/blob/master/graficoSalarial/grafico.js']});
 
 export default class vsCode{
     #vs;
+
+    static get comando(){return 'code';}
+    get ico(){return './recursos/vscode.svg';}
+
     constructor(){
-        kernel.registrarApp('code','vsCode',this);
-        kernel.agregarNuevaRuta(proyectos);
-        proyectos.abrirCon(this);
-        this.#vs = new UrlAplicacion('code','vsCode',ico.code);
-        this.#vs.url = proyectos.exec;
+        this.#vs = new UrlAplicacion(vsCode.comando,'vsCode',this.ico,this);
         this.#vs.app.personalizarCapturas = (id,dimencion)=>{
             const ventana = this.#vs.app.obtenerVentana(id);
             const marco = document.createElement('div');
@@ -39,12 +27,12 @@ export default class vsCode{
             ventana.cambiarDimensionInicial('80%','80%');
         })}
 
-    abrir(nombreProyecto){
+    abrir(titulo,url){
         let continuar = true;
         this.#vs.app.forEach(ventana=>{
-            if(ventana.titulo == proyectos.obtenerNombreArchivo(nombreProyecto)){
+            if(ventana.titulo == titulo){
                 continuar = false;
                 ventana.abrir();}});
         if(continuar)
-            this.#vs.abrirInstancia(nombreProyecto);}
+            this.#vs.abrirInstancia(titulo,url);}
 }

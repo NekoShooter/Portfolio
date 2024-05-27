@@ -4,8 +4,15 @@ import Vanie, { globalVanie } from "vanie";
 import kernel from "./Kernel";
 
 export default class Capturadora{
-    #contenedor; #padre; #fnMini; #w; #h; #llave; #posMimi;
-    #lista_capturas = new Map; #visible = false; #lanzador;
+    #padre;
+    #contenedor;
+    #fnMini;
+    #w; #h;
+    #llave;
+    #posMimi;
+    #lista_capturas = new Map;
+    #visible = false;
+    #lanzador;
 
     constructor(){
         const{w,h}={windows:{w:120,h:72},

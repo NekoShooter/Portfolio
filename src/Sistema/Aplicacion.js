@@ -7,19 +7,20 @@ export default class Aplicacion{
     #dock = kernel.DOCK;
     #capturadora = new Capturadora;
     #listaVentanas = new Map;
-    #comando;
     #ventana_unica;
     #ventana_principal;
     #ventana_actual;
     #contador = 0;
+    #comando;
     #lanzador;
     #nombreApp;
     #configVanie;
 
-    constructor(comando,nombreAplicacion,icono,anclado = false){
+    constructor(comando,nombreAplicacion,icono,app,anclado = false){
+        kernel.registrarApp(comando,nombreAplicacion,app);
         this.#comando = comando;
         this.#nombreApp = nombreAplicacion;
-        this.#lanzador = new Lanzador(comando,icono,anclado);
+        this.#lanzador = new Lanzador(this.#nombreApp,icono,anclado);
         this.#lanzador.ventanas = this.#listaVentanas;
         this.#capturadora.conectarLanzador(this.#lanzador);
         this.#click();}
@@ -31,7 +32,6 @@ export default class Aplicacion{
         if(!this.ventanaPredeterminada) return this.#listaVentanas.size;
         const ventanas = this.#listaVentanas.size - (this.ventanaPredeterminada.estaCerrado ? 1 : 0);
         return ventanas < 0 ? 0 : ventanas;}
-    get comando(){return this.#comando;}
     get id(){return this.#nombreApp;}
 
     forEach(funcion){this.#listaVentanas.forEach(funcion)}

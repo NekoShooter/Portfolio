@@ -3,30 +3,25 @@ import Aplicacion from './Aplicacion'
 
 export default class UrlAplicacion{
     #app;
-    #url;
     #nombreAplicacion;
 
-    constructor(comando,nombre,ico,anclado = false){
+    constructor(comando,nombre,ico,app,anclado = false){
         if(typeof(nombre) != 'string' || nombre.trim() == '')
             throw ('el objeto necesita un nombre valido');
         this.#nombreAplicacion = nombre.trim()
-        this.#app = new Aplicacion(comando.trim(),this.#nombreAplicacion,ico,anclado);}
+        this.#app = new Aplicacion(comando,this.#nombreAplicacion,ico,app,anclado);}
 
-    set url(objetoURL){this.#url = objetoURL;}
-    get url(){return this.#url;}
     get app(){return this.#app;}
 
     configurarVentana(funcion){this.#app.configurarVentana(funcion);}
 
-    abrirInstancia(alias){
-        if(!alias || alias == this.#app.id){
+    abrirInstancia(titulo,url){
+        if(!titulo || !url){
             this.#app.abrir();
             return;}
         const ventanaNueva = new Vanie;
-        const url = this.#url[alias][1];
-        const titulo = this.#url[alias][0];
         ventanaNueva.cargarURL(url);
-        const id = this.#app.agregarVentana(ventanaNueva,titulo);
+        this.#app.agregarVentana(ventanaNueva,titulo);
         ventanaNueva.abrir();}
 
     ventanaPrincipal(ventana,titulo){this.#app.agregarVentanaPrincipal(ventana,titulo);}
