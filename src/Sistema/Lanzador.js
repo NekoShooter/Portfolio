@@ -63,38 +63,20 @@ export default class Lanzador{
         if(this.#insertado) return;
         kernel.DOCK.contenedor.appendChild(this.#contenedor);
         this.#llave = kernel.DOCK.registrarLanzador(this);
-        this.#insertado = true;
-    }
+        this.#insertado = true;}
+
     remover(){
         if(!this.#llave || !this.#insertado) return;
         kernel.DOCK.contenedor.removeChild(this.#contenedor);
         kernel.DOCK.desconectarLanzador(this.#llave);
-        this.#insertado = false;
-    }
-        
+        this.#insertado = false;}
 
     #unix(){
-        const inv = {width:'height',height:'width'}
-        const med = kernel.DOCK.esVertical ? 'height' : 'width';
-        const margen = '5px'; 
-
-        
-        this.#contenedor.style.paddingBottom = '3px';
-
-        
-        this.#marcador.style[inv[med]] = margen;
-        this.#marcador.style[med] = '100%';
-
-
         for(let i = 0; i < this.numMarcadores; ++i){
             const punto = document.createElement('div');
-            punto.style.width = punto.style.height = '4px';
-            punto.style.backgroundColor = '#fff';
-            punto.style.borderRadius = '50%';
             punto.style.display = 'none';
             this.#marcador.appendChild(punto);}
-
-        
+            
         this.#contenedor.appendChild(this.#icono);
         this.#contenedor.appendChild(this.#marcador);}
 

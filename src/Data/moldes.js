@@ -17,6 +17,28 @@ function txt(str){
     span.innerText = str;
     return span;}
 
+function moldeTitulo(str,data){
+    const div = document.createElement('div');
+    const texto = txt(str);
+    if(data & 1) texto.classList.add(globalVanie.globalClass('bloqueado'));
+    if(data & 2) div.classList.add(globalVanie.globalClass('bloqueado'));
+    if(data & 4) div.style.width = div.style.height = '100%';
+    div.appendChild(texto);
+    return div;}
+
+function moldeBoton(url,fn){
+    const div = document.createElement('div');
+    const ico = new Image;
+    const btn = document.createElement('bottom');
+    btn.appendChild(ico);
+    if(typeof url == 'string') ico.setAttribute('src',url);
+    else if(url instanceof Array){
+        ico.setAttribute('src',url[0]);
+        btn.appendChild(txt(url[1]));}
+    div.appendChild(btn);
+    if(fn) btn.addEventListener('click',fn);
+    return div;}
+
 function moldeBipanel(){
     const contenedor = document.createElement('div');
     const panelDer = contenedor.cloneNode();
@@ -49,4 +71,4 @@ function elegirNodo(e,elemento,fn){
             fn(i,div[i]);
             break;}}}
 
-export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt}
+export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton}

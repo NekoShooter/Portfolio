@@ -13,13 +13,7 @@ export default class DockMac extends Dock{
         this.restaurar = this.restaurar.bind(this);
         this.#eventos();}
 
-    #estilos(){
-        const margen = 5;
-        this.padre.style.marginBottom = `${margen}px`;
-        this.contenedor.classList.add('dock_mac','acrilico');
-        this.contenedor.style.paddingInline = `${margen}px`;
-        this.contenedor.style.width = 'fit-content';
-        this.contenedor.style.alignItems='end';}
+    #estilos(){this.contenedor.classList.add('dock_mac','acrilico');}
 
     #eventoBusquedaIndice(){
         if(!this.estaConstruido) return;
@@ -27,12 +21,8 @@ export default class DockMac extends Dock{
 
         this.contenedor.addEventListener('mouseenter',e=>{
             if(!listaHijos?.length) return;
-
-            protector.classList.remove(globalVanie.globalClass('bloqueado'));
-            protector.style.zIndex = globalVanie.ventanasVisibles + 2;
+            kernel.bloquearEscritorio(true);
             this.zIndex = globalVanie.ventanasVisibles + 2;
-
-            kernel.reacomodarMiniaturas(false);
 
             const data = {mov: e.offsetX, tam:listaHijos.length * this.contenedor.lastChild.offsetWidth}
 
@@ -46,20 +36,18 @@ export default class DockMac extends Dock{
 
         //ANIMACION AUMENTO
         this.contenedor.addEventListener('mousemove',e =>{
-            kernel.reacomodarMiniaturas(false);
             this.#afirmarIndice(e);
-            this.#efectoLupa(e);});
+            if(super.nodos[this.#indiceActual]?.getBoundingClientRect().top < e.clientY)
+                this.#efectoLupa(e);});
 
         //VOLVER A SU ESTADO NORMAL
-        this.contenedor.addEventListener('mouseleave',()=>{
-            this.restaurar();
-            kernel.reacomodarMiniaturas(true);
-        });}
+        this.contenedor.addEventListener('mouseleave',this.restaurar);}
 
     #afirmarIndice(e){
         const contendorActual = super.nodos[this.#indiceActual];
 
-            if(!this.orientacion || !contendorActual) return;
+            //if(!this.orientacion || !contendorActual) return;
+            if(!contendorActual) return;
 
             const data = {mov: e.clientX, pos:contendorActual.getBoundingClientRect().left,tam: contendorActual.offsetWidth}
 
@@ -103,6 +91,6 @@ export default class DockMac extends Dock{
     interruptor(e){this.#efectoLupa(e);}
 
     restaurar(){
-        kernel.protector.classList.add(globalVanie.globalClass('bloqueado'));
+        kernel.bloquearEscritorio(false);
         this.nodos.forEach(div=>
             {div.style.width = `${this.#medidaLanzador}px`});}}

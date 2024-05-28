@@ -54,7 +54,6 @@ const ico = {
 
 function icon(alias){
     const icono = ico[alias];
-    //if(!icono) return ICONOS[kernel.os][alias].ico;
     if(!icono) return miniIco[kernel.os][alias];
     return icono;}
     

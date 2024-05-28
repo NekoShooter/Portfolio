@@ -6,7 +6,7 @@ import Vbox from "./src/Programas/Vbox";
 import cargarFicheros from "./src/Sistema/Ficheros";
 
 window.addEventListener('load',()=>{
-    kernel.escritorio('escritorio').SistemaOperativo('mac').dock('dock').protectorPantalla('protector');
+    kernel.escritorio('escritorio').SistemaOperativo('mac').dock('dock');
     new Menu;
     new Folder;
     new vsCode;

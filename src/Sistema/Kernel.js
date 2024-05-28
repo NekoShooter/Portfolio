@@ -24,14 +24,6 @@ class Kernel{
     agregarNuevaRuta(cd){this.#ruta.agregarRuta(cd);}
     get ruta(){return this.#ruta;}
 
-    protectorPantalla(id){
-        this.#protector= document.getElementById(id);
-        this.#protector.classList.add(globalVanie.globalClass('bloqueado'));
-        this.#protector.addEventListener('mousemove',()=>{this.#dock.restaurar();});
-        return this;}
-
-    get protector(){return this.#protector;}
-
     escritorio(id){
         if(typeof id == 'string' && id.trim() != '')
             this.#escritorio = document.getElementById(id);
@@ -43,6 +35,11 @@ class Kernel{
         if(!globalVanie.padre) throw('error al asignar el escritorio');
         this.#estilar();
         return this;}
+
+    bloquearEscritorio(boleano){
+        if(boleano) this.#escritorio.classList.add(globalVanie.globalClass('bloqueado'));
+        else this.#escritorio.classList.remove(globalVanie.globalClass('bloqueado'));
+    }
     
     #ocutarMiniaturas(e){
         let ocultar = true;
@@ -61,11 +58,6 @@ class Kernel{
             this.#escritorio.style.justifyContent = 'center';}}
 
     get capturadoras(){return this.#capturadoras;}
-
-    reacomodarMiniaturas(ok){
-        if(!this.miniaturasVisible) return;
-        if(ok)this.miniaturasVisible.reacomodar();
-        else this.miniaturasVisible.acomodar();}
 
     registrarCapturadora(capturadora){
         if(!capturadora) return;

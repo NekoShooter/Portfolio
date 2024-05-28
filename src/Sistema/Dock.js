@@ -75,12 +75,7 @@ export default class Dock{
 
     #estilador(){
         this.#contenedor.style = '';
-        this.#modificaDimencion();
-        this.#contenedor.style.display = 'flex';
-        if(kernel.esLinux)
-            this.#contenedor.style.flexDirection = 'column';
-        if(kernel.esMac)
-            this.#contenedor.style.alignItems = 'center';}
+        this.#modificaDimencion();}
 
     #modificaDimencion(){
         if(!this.#contenedor) return;
