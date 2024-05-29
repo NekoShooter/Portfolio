@@ -29,7 +29,7 @@ function moldeTitulo(str,data){
 function moldeBoton(url,fn){
     const div = document.createElement('div');
     const ico = new Image;
-    const btn = document.createElement('bottom');
+    const btn = document.createElement('button');
     btn.appendChild(ico);
     if(typeof url == 'string') ico.setAttribute('src',url);
     else if(url instanceof Array){

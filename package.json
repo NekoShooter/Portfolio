@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "nauty": "1.0.0",
-    "vanie": "0.0.3"
+    "vanie": "0.0.4"
   }
 }

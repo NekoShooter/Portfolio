@@ -80,7 +80,8 @@ export default class Aplicacion{
         this.#cambiarDataVentana(ventana);
 
         ventana.addEventListener('cerrar',()=>{
-            this.#capturadora.eliminarCaptura(id);
+            this.#capturadora.removerCaptura(id);
+            
             if(!tipo){
                 if(this.#ventana_actual == ventana) this.#ventana_actual = this.ventanaPredeterminada;
                 this.#listaVentanas.delete(id);

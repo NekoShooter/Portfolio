@@ -1,6 +1,6 @@
 import Lanzador from "./Lanzador";
 import { Dimension, Punto , Rect, rotar } from "nauty";
-import Vanie, { globalVanie } from "vanie";
+import { globalVanie } from "vanie";
 import kernel from "./Kernel";
 import { moldeBoton, moldeTitulo } from "../Data/moldes";
 
@@ -19,7 +19,7 @@ export default class Capturadora{
 
     get dimension(){ return new Dimension(...({windows:[120,75],linux:[120,75],mac:[120,75]}[kernel.os]));}
     get esValido(){return Boolean(this.#padre);}
-    get contenedorPrincipal(){return this.#contenedor ?? this.#padre;}
+    get contenedorPrincipal(){return this.#contenedor ?? this.#lanzador.contenedor;}
     get padre(){return this.#padre;}
     get esVisible(){return this.#visible;}
     get capturas(){return this.#lista_capturas;}
@@ -65,18 +65,28 @@ export default class Capturadora{
         miniatura.classList.add(globalVanie.globalClass('bloqueado'));
         const frame = document.createElement('div');
         const contenedorTxt = document.createElement('div');
-        contenedorTxt.appendChild(moldeTitulo(ventana.titulo,6));
+        const contenedorTitulo  = moldeTitulo(ventana.titulo);
+        contenedorTxt.appendChild(contenedorTitulo);
         frame.appendChild(contenedorTxt);
-        frame.appendChild(moldeBoton('./recursos/iconos/x.svg',()=>{
+        const btn = moldeBoton('./recursos/iconos/x.svg',()=>{
             ventana.cerrar();
-            this.ocultarMiniaturas();
-            this.contenedorPrincipal.removeChild(captura);
-            this.eliminarCaptura(identificador);}));
+            this.removerCaptura(identificador);});
+
+        if(kernel.esMac){
+            contenedorTitulo.classList.add('acrilico');
+            btn.firstChild.classList.add('acrilico');}     
+        frame.appendChild(btn);
         frame.appendChild(miniatura);
         return frame;}
 
+    removerCaptura(identificador){
+        this.ocultarMiniaturas();
+        const captura = this.eliminarCaptura(identificador);
+        if(!captura) return;
+        this.contenedorPrincipal.removeChild(captura);}
+
     crearCaptura(identificador,ventana){
-        if(typeof identificador != 'string' || identificador == '') return;
+        if(typeof identificador != 'string' || identificador == ''|| !ventana) return;
         if(!this.#llave) this.#llave = kernel.registrarCapturadora(this);
 
         const captura = this.#frame(ventana,identificador,this.#fnMini?.(identificador,this.dimension));
@@ -85,6 +95,7 @@ export default class Capturadora{
         this.#lista_capturas.set(identificador,captura);
 
         captura.addEventListener('click',()=>{
+            if(!this.#lista_capturas.get(identificador)) return;
             ventana.abrir();
             this.ocultarMiniaturas();});
 
@@ -124,9 +135,7 @@ export default class Capturadora{
     mostrarMiniaturas(){
         if(!this.esValido || this.#visible) return;
         kernel.miniaturasVisible = this;
-        globalVanie.ventanasForEach(ventana=>{
-            if(ventana.esSuperior) ventana.bloquearIframe(true);
-        });
+        kernel.bloquearEscritorio(true);
         if(this.#contenedor) this.#contenedor.style.display='';
         else this.capturas.forEach(miniatura=>{
             miniatura.style.display= '';
@@ -139,9 +148,7 @@ export default class Capturadora{
     ocultarMiniaturas(){
         if(!this.esValido || !this.#visible) return;
         kernel.miniaturasVisible = undefined;
-        globalVanie.ventanasForEach(ventana=>{
-            if(ventana.esSuperior) ventana.bloquearIframe(false);
-        });
+        kernel.bloquearEscritorio(false);
         this.#visible = false;
         this.capturas.forEach(miniatura=>{
             miniatura.style.opacity = 0;
@@ -168,7 +175,8 @@ export default class Capturadora{
     eliminarCaptura(identificador){
         const captura = this.#lista_capturas.get(identificador);
         if(!captura) return;
-        this.#lista_capturas.delete(identificador);}
+        this.#lista_capturas.delete(identificador);
+        return captura;}
 
     dameCaptura(identificador){return this.#lista_capturas.get(identificador);}
     
