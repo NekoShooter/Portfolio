@@ -7,6 +7,14 @@ function reCuadro(){
     div.appendChild(contenedor);
     return [div,contenedor];}
 
+function insertarA(padre,elemento,num){
+    const lista = [];
+    for(let i = 0; i < num; i++){
+        const e = document.createElement(elemento);
+        padre.appendChild(e);
+        lista.push(e);}
+    return lista;}
+
 function imagen(src){
     const img = new Image;
     img.src=src;
@@ -39,13 +47,13 @@ function moldeBoton(url,fn){
     if(fn) btn.addEventListener('click',fn);
     return div;}
 
-function moldeBipanel(){
+function moldeBipanel(full = true){
     const contenedor = document.createElement('div');
     const panelDer = contenedor.cloneNode();
     const panelIzq = contenedor.cloneNode();
     contenedor.appendChild(panelDer);
     contenedor.appendChild(panelIzq);
-    contenedor.style.height = contenedor.style.widht = '100%';
+    if(full)contenedor.style.height = contenedor.style.width = '100%';
     return [contenedor,panelDer,panelIzq];}
 
 function moldeElemento(url,str){
@@ -71,4 +79,4 @@ function elegirNodo(e,elemento,fn){
             fn(i,div[i]);
             break;}}}
 
-export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton}
+export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton,insertarA}

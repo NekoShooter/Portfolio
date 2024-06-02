@@ -47,15 +47,21 @@ const ico = {
     js:'https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_js_official_icon_130509.png',
     c:'https://i.ibb.co/1Q10GFX/C.png',
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
-    py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png',
-   // [vsCode.comando]: './recursos/vscode.svg',
-   // VBoxManage:'./recursos/iconos/vitual box.png'
+    py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png'
+}
+
+const icoOs = {
+    mac:'https://cdn.icon-icons.com/icons2/643/PNG/512/mac-apple-osx-desktop-software-hardware_icon-icons.com_59289.png',
+    linux: 'https://cdn.icon-icons.com/icons2/70/PNG/512/ubuntu_14143.png',
+    windows:'https://cdn.icon-icons.com/icons2/643/PNG/512/windows-square-shape-brand_icon-icons.com_59257.png',
 }
 
 function icon(alias){
     const icono = ico[alias];
     if(!icono) return miniIco[kernel.os][alias];
     return icono;}
+
+function logoOs(){return icoOs[kernel.os];}
     
-export {ICONOS , ico , icon}
+export {ICONOS , ico , icon , logoOs, icoOs}
 export default icon;
