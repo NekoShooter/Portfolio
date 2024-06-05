@@ -25,6 +25,12 @@ function txt(str){
     span.innerText = str;
     return span;}
 
+function parrafo(str){
+    const p = document.createElement('p');
+    p.innerText= str;
+    return p;
+}
+
 function moldeTitulo(str,data){
     const div = document.createElement('div');
     const texto = txt(str);
@@ -79,4 +85,4 @@ function elegirNodo(e,elemento,fn){
             fn(i,div[i]);
             break;}}}
 
-export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton,insertarA}
+export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton,insertarA,parrafo}

@@ -98,7 +98,8 @@ export default class Aplicacion{
             this.#actualizarPosicion(id);
             this.#lanzador.mostrarMarcador();
             this.#capturadora.crearCaptura(id,ventana);
-        });
+            if(!this.#lanzador.esVisible)
+                this.#lanzador.apertura();});
 
         if(!tipo) {this.interruptorVentana(ventana);}
         return id;}

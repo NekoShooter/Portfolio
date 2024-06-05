@@ -21,6 +21,7 @@ export default class Lanzador{
     get estaConstruido(){return this.#contenedor && this.#icono && this.#marcador;}
     get dataValida(){return this.#nombre && this.#ruta_ico;}
     get numMarcadores(){return kernel.esLinux ? 4 : 1;}
+    get esVisible(){return this.#apertura;}
 
     constructor(nombre,ruta_ico,esfijo=false){
         this.data(nombre,ruta_ico,esfijo);

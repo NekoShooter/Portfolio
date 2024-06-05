@@ -1,6 +1,6 @@
 import Vanie, { globalVanie } from 'vanie';
 import Aplicacion from '../Sistema/Aplicacion'
-import { elegirNodo, imagen, moldeBipanel, moldeElemento, txt } from '../Data/moldes'
+import { elegirNodo, imagen, moldeBipanel, moldeElemento, parrafo, txt } from '../Data/moldes'
 import { icoOs } from '../Data/iconos';
 import kernel from '../Sistema/Kernel';
 
@@ -85,7 +85,11 @@ export default class Vbox{
         inf.classList.add('vb-der-inf',globalVanie.globalClass('animacion'));
         this.#panelDer.classList.add('vb-der');
         this.#panelDer.appendChild(contenedor);
-        sup.appendChild(txt('hjhkhkjhjkiaushiuqiuagbgfsjklblquiaewrbiueqwbfgiaudbfviqeurgbiuwqerghuiwergiluerwhglieurghieruhgleirughliuerhgliuerhgieurhgliwerugblieuvcbnoauireth3riegbilerhgbliergbierhverigb3rliewugbliweurbvlieruhgblierjgblierugblwidjrgbleirgjbleriugbleriwjgbeilrugblivjberwlguiewi'));
+        const acercaDe = document.createElement('div');
+        acercaDe.appendChild(txt('Bienvenido a mi portafolio.'));
+        acercaDe.appendChild(parrafo('Este portafolio web está inspirado en la estética de los tres sistemas operativos más utilizados: Windows, Linux y Mac. Fue construido utilizando HTML, CSS y JavaScript, sin recurrir a ningún framework.'));
+        acercaDe.appendChild(parrafo(' Las únicas librerías empleadas fueron Vanie y Nauty, ambas creadas por mí y disponibles en npm. Vanie es una librería destinada a la creación y gestión de ventanas arrastrables (draggables), mientras que Nauty se encarga del manejo de coordenadas y transformaciones en un plano 2D.'));
+        sup.appendChild(acercaDe);
         sup.appendChild(imagen('https://i.ibb.co/r2RFbVP/perfil-vanie-1.png'));}
 
     
@@ -93,5 +97,5 @@ export default class Vbox{
     abrir(){
         if(!this.#app.ventanaUnica)
             this.#app.agregarVentanaUnica(this.#ventana,'Oracle VM virtualBox Administrador');
-        this.#app.abrir();}
+        this.#ventana.abrir();}
 }
