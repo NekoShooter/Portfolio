@@ -1,4 +1,11 @@
 import kernel from "../Sistema/Kernel";
+const url ={
+    vanie:'https://www.npmjs.com/package/vanie',
+    nauty:'https://www.npmjs.com/package/nauty',
+    linkedin:'https://www.linkedin.com/in/neko-shooter/',
+    github:'https://github.com/NekoShooter',
+    npm:'https://www.npmjs.com/~neko_shooter'
+}
 
 const ICONOS = {
     mac:{
@@ -45,6 +52,8 @@ const miniIco = {
 }
 const ico = {
     js:'https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_js_official_icon_130509.png',
+    html:'./recursos/iconos/html.svg',
+    css:'./recursos/iconos/css.svg',
     c:'https://i.ibb.co/1Q10GFX/C.png',
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
     py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png'
@@ -63,5 +72,5 @@ function icon(alias){
 
 function logoOs(){return icoOs[kernel.os];}
     
-export {ICONOS , ico , icon , logoOs, icoOs}
+export {ICONOS , ico , icon , logoOs, icoOs , url}
 export default icon;

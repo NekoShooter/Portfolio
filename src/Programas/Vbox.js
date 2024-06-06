@@ -1,7 +1,7 @@
-import Vanie, { globalVanie } from 'vanie';
+import { Vanie , globalVanie } from 'vanie';
 import Aplicacion from '../Sistema/Aplicacion'
-import { elegirNodo, imagen, moldeBipanel, moldeElemento, parrafo, txt } from '../Data/moldes'
-import { icoOs } from '../Data/iconos';
+import { _div, elegirNodo, imagen, link, moldeBipanel, moldeElemento, parrafo, txt } from '../Data/moldes'
+import { icoOs , ico, url} from '../Data/iconos';
 import kernel from '../Sistema/Kernel';
 
 const icoVB = {
@@ -19,6 +19,8 @@ export default class Vbox{
     get ico(){return './recursos/iconos/vitual box.png';}
 
     constructor(){
+        this.#ventana.cambiarDimensionDelLienzo(775,510);
+        this.#ventana.cambiarDimensionMinima(500,300);
         this.#construir();
     }
 
@@ -84,15 +86,16 @@ export default class Vbox{
         sup.classList.add('vb-der-sup',globalVanie.globalClass('animacion'));
         inf.classList.add('vb-der-inf',globalVanie.globalClass('animacion'));
         this.#panelDer.classList.add('vb-der');
-        this.#panelDer.appendChild(contenedor);
-        const acercaDe = document.createElement('div');
-        acercaDe.appendChild(txt('Bienvenido a mi portafolio.'));
-        acercaDe.appendChild(parrafo('Este portafolio web está inspirado en la estética de los tres sistemas operativos más utilizados: Windows, Linux y Mac. Fue construido utilizando HTML, CSS y JavaScript, sin recurrir a ningún framework.'));
-        acercaDe.appendChild(parrafo(' Las únicas librerías empleadas fueron Vanie y Nauty, ambas creadas por mí y disponibles en npm. Vanie es una librería destinada a la creación y gestión de ventanas arrastrables (draggables), mientras que Nauty se encarga del manejo de coordenadas y transformaciones en un plano 2D.'));
-        sup.appendChild(acercaDe);
-        sup.appendChild(imagen('https://i.ibb.co/r2RFbVP/perfil-vanie-1.png'));}
-
-    
+        this.#panelDer.appendChild(contenedor);        
+        sup.appendChild(_div(txt('Bienvenido a mi portafolio.'),
+            parrafo('Este portafolio web está inspirado en la estética de los tres sistemas operativos más utilizados: Windows, Linux y Mac. Fue construido utilizando HTML, CSS y JavaScript, sin recurrir a ningún framework.'),
+            parrafo('Las únicas librerías empleadas fueron Vanie y Nauty, ambas creadas por mí y disponibles en npm. Vanie es una librería destinada a la creación y gestión de ventanas arrastrables (draggables), mientras que Nauty se encarga del manejo de coordenadas y transformaciones en un plano 2D.')));
+        sup.appendChild(imagen('https://i.ibb.co/gyFR3Xr/estrlla-rota-ld-2.jpg'));
+        const vanie_a = link(url.vanie);
+        vanie_a.appendChild(imagen('https://i.ibb.co/r2RFbVP/perfil-vanie-1.png'));
+        const nauty_a = link(url.nauty);
+        nauty_a.appendChild(imagen('https://i.ibb.co/NT0X9Yr/perfil-nauty.png'));
+        sup.appendChild(_div(txt('Construido con:'),imagen(ico.html),imagen(ico.css),imagen(ico.js),vanie_a,nauty_a));}
 
     abrir(){
         if(!this.#app.ventanaUnica)

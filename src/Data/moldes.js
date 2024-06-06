@@ -1,5 +1,11 @@
 import { globalVanie } from "vanie";
 
+function link(str_link){
+    const a = document.createElement('a');
+    a.setAttribute('href',str_link);
+    a.setAttribute('target','_blank');
+    return a;}
+
 function reCuadro(){
     const div = document.createElement('div');
     const contenedor = div.cloneNode();
@@ -14,6 +20,11 @@ function insertarA(padre,elemento,num){
         padre.appendChild(e);
         lista.push(e);}
     return lista;}
+
+function _div(...args){
+    const d = document.createElement('div');
+    for(const dom of args){d.appendChild(dom);}
+    return d;}
 
 function imagen(src){
     const img = new Image;
@@ -85,4 +96,4 @@ function elegirNodo(e,elemento,fn){
             fn(i,div[i]);
             break;}}}
 
-export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton,insertarA,parrafo}
+export {moldeElemento,moldeArchivo,elegirNodo,reCuadro,moldeBipanel,imagen,txt,moldeTitulo,moldeBoton,insertarA,parrafo,link,_div}
