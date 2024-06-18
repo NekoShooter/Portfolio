@@ -1,9 +1,10 @@
 import { globalVanie } from "vanie";
 
-function link(str_link){
+function link(...args){
     const a = document.createElement('a');
-    a.setAttribute('href',str_link);
+    if(args[0]) a.setAttribute('href',args[0]);
     a.setAttribute('target','_blank');
+    for(let i = 1; i < args.length; ++i){a.appendChild(args[i]);}
     return a;}
 
 function reCuadro(){
@@ -13,27 +14,30 @@ function reCuadro(){
     div.appendChild(contenedor);
     return [div,contenedor];}
 
-function insertarA(padre,elemento,num){
+function insertarA(padre,elemento,num,bloqueado = false){
     const lista = [];
     for(let i = 0; i < num; i++){
         const e = document.createElement(elemento);
+        if(bloqueado) e.classList.add(globalVanie.globalClass('bloqueado'));
         padre.appendChild(e);
         lista.push(e);}
     return lista;}
 
 function _div(...args){
     const d = document.createElement('div');
-    for(const dom of args){d.appendChild(dom);}
+    args.forEach(dom=>{d.appendChild(dom)})
     return d;}
 
-function imagen(src){
+function imagen(src,bloqueado = false){
     const img = new Image;
     img.src=src;
+    if(bloqueado)img.classList.add(globalVanie.globalClass('bloqueado'));
     return img;}
 
-function txt(str){
+function txt(str,bloqueado = false){
     const span = document.createElement('span');
     span.innerText = str;
+    if(bloqueado)span.classList.add(globalVanie.globalClass('bloqueado'));
     return span;}
 
 function parrafo(str){

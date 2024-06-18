@@ -56,7 +56,8 @@ const ico = {
     css:'./recursos/iconos/css.svg',
     c:'https://i.ibb.co/1Q10GFX/C.png',
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
-    py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png'
+    py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png',
+    github:'https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png'
 }
 
 const icoOs = {

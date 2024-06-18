@@ -8,7 +8,6 @@ class Kernel{
     #dock;
     #contenedorDock;
     #escritorio;
-    #protector;
     #capturadoras = new Map;
     #registros = 0;
     miniaturasVisible;
@@ -115,11 +114,12 @@ class Kernel{
 
     interruptorTema(){
         if(this.#tema) {
-            this.#tema = {oscuro:'claro', claro:'oscuro'}[this.#tema];
+            this.#tema = this.inversoTema;
             globalVanie.establecerBase(this.#os + '-' + this.#tema);}
         return this;}
 
     get tema(){return this.#tema??'';}
+    get inversoTema(){return {oscuro:'claro', claro:'oscuro'}[this.#tema]};
     get os(){return this.#os??'';}
     get DOCK(){return this.#dock;}
     
