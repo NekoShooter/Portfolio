@@ -128,7 +128,43 @@ export default class Vbox{
 
     #panelDerechoInf(inf){
         inf.classList.add('vb-der-inf',globalVanie.globalClass('animacion'));
+        inf.appendChild(txt(this.#obtenerNavegador()));
+        inf.appendChild(txt(this.#obtenerOS()));
+        
+
     }
+
+    #obtenerNavegador(){
+        const userAgent = navigator.userAgent;
+        const navegadores = {
+            Firefox:'Mozilla Firefox',
+            Opera:'Opera',OPR:'Opera',
+            Chrome:'Google Chrome',
+            Safari:'Apple Safari',
+            Trident:'Microsoft Interner Explorer',
+            Edg:'Microsoft Edge'};
+
+        let navegador = '';
+        const nav = [];
+        let validos = 0;
+        console.log(userAgent);
+
+        for(const llave in navegadores){
+            if(userAgent.indexOf(llave) > -1){
+                ++validos;
+                if(llave == 'Chrome' || llave == 'Safari') nav.push(llave);
+                navegador = navegadores[nav.length != validos? llave:nav[0]];}}
+        return navegador;}
+
+    #obtenerOS(){
+        const plataforma = navigator.userAgent;
+        let os = '';
+        for(const sis of kernel.sistemas){
+            const sistema = sis.charAt(0).toUpperCase() + sis.slice(1);
+            if(plataforma.indexOf(sistema)){
+                os = sistema;
+                break;}}
+        return os;}
 
     abrir(){
         if(!this.#app.ventanaUnica)

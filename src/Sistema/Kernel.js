@@ -98,7 +98,7 @@ class Kernel{
         this.#dock = new {mac:BarraMac}[this.#os](this.#contenedorDock,this.data);}
 
     SistemaOperativo(os){
-        if(this.#os != os && typeof os == 'string' && ['windows','mac','linux'].includes(os)){
+        if(this.#os != os && typeof os == 'string' && this.sistemas.includes(os)){
             if(!this.#tema){
                 //ve si el usuario ya posee el tema oscuro por defecto
                 const temaOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -120,6 +120,7 @@ class Kernel{
 
     get tema(){return this.#tema??'';}
     get inversoTema(){return {oscuro:'claro', claro:'oscuro'}[this.#tema]};
+    get sistemas(){return ['windows','mac','linux']}
     get os(){return this.#os??'';}
     get DOCK(){return this.#dock;}
     
