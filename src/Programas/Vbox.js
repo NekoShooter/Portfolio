@@ -24,7 +24,7 @@ export default class Vbox{
         this.#ventana.cambiarDimensionDelLienzo(775,510);
         this.#ventana.cambiarDimensionMinima(500,300);
         this.#construir();
-    }
+        this.cambiarTema();}
 
     #construir(){
         const [contenedor,izquierdo,derecho] = moldeBipanel();
@@ -44,13 +44,18 @@ export default class Vbox{
             elegirNodo(e,izquierdo,(idx)=>{
                 this.#correrOs(this.#idxSys,false);
                 this.#idxSys = idx;
-                this.#correrOs(idx,true)})})
+                this.#correrOs(idx,true)})});
 
         this.#ventana.lienzo = contenedor;}
 
     #modTranslacion(transladar){
         const [sup,inf] = this.#panelDer.childNodes[1].childNodes;
         inf.style.transform = sup.style.transform = transladar?'translateY(100%)':'';}
+
+    cambiarTema(){
+        if(!this.#panelDer) return;
+        const imagenGitHub =this.#panelDer.firstChild.lastChild.firstChild;
+        imagenGitHub.style.filter = kernel.temaOscuro? 'invert(100%)':'';}
 
     #construirPanelIzquierdo(dom){
         this.#panelIzq = dom;
@@ -81,7 +86,7 @@ export default class Vbox{
         this.#idxSysSel = indice;
         const selecion =  this.#panelIzq.childNodes[indice];
         this.#modTranslacion(!indice);
-        selecion.style.backgroundColor = '#8fceff';}
+        selecion.style.backgroundColor = kernel.temaOscuro ? '#369baa':'#8fceff';}
 
     
     #desmarcarCelda(){
@@ -112,9 +117,11 @@ export default class Vbox{
                             break;
                         case 1:
                             kernel.interruptorTema();
+                            this.#seleccionarCelda(this.#idxSysSel);
                             contenedor.childNodes[1].childNodes[0].src = icoVB[kernel.inversoTema];
                             contenedor.childNodes[1].childNodes[1].innerText = kernel.inversoTema;
                             break;}});});}
+
                             
     #panelDerechoSup(sup){
         sup.classList.add('vb-der-sup',globalVanie.globalClass('animacion'));
@@ -129,10 +136,7 @@ export default class Vbox{
     #panelDerechoInf(inf){
         inf.classList.add('vb-der-inf',globalVanie.globalClass('animacion'));
         inf.appendChild(txt(this.#obtenerNavegador()));
-        inf.appendChild(txt(this.#obtenerOS()));
-        
-
-    }
+        inf.appendChild(txt(this.#obtenerOS()));}
 
     #obtenerNavegador(){
         const userAgent = navigator.userAgent;

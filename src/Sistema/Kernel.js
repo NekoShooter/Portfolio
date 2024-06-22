@@ -5,6 +5,7 @@ import Ruta from "./Ruta";
 class Kernel{
     #os;
     #tema;
+    #esTemaOscuro = false;
     #dock;
     #contenedorDock;
     #escritorio;
@@ -101,8 +102,9 @@ class Kernel{
         if(this.#os != os && typeof os == 'string' && this.sistemas.includes(os)){
             if(!this.#tema){
                 //ve si el usuario ya posee el tema oscuro por defecto
-                const temaOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                this.#tema = temaOscuro ? 'oscuro':'claro';}
+                this.#esTemaOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                this.#tema = this.#esTemaOscuro ? 'oscuro':'claro';
+                if(this.#esTemaOscuro) document.body.classList.add('dark-theme');}
             this.#os = os;
             globalVanie.establecerBase(this.#os + '-' + this.#tema);
             
@@ -115,10 +117,15 @@ class Kernel{
     interruptorTema(){
         if(this.#tema) {
             this.#tema = this.inversoTema;
-            globalVanie.establecerBase(this.#os + '-' + this.#tema);}
+            this.#esTemaOscuro = !this.#esTemaOscuro;
+            document.body.classList.toggle('dark-theme');
+            globalVanie.establecerBase(this.#os + '-' + this.#tema);
+            this.#adminApp.forEach(aplicacion=>{if(aplicacion.cambiarTema) aplicacion.cambiarTema();});
+        }
         return this;}
 
     get tema(){return this.#tema??'';}
+    get temaOscuro(){return this.#esTemaOscuro;}
     get inversoTema(){return {oscuro:'claro', claro:'oscuro'}[this.#tema]};
     get sistemas(){return ['windows','mac','linux']}
     get os(){return this.#os??'';}

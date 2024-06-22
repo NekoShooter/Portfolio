@@ -116,10 +116,11 @@ export default class Menu{
     #estrurador(){
         this.divMenu.appendChild(this.#divBuscador);
         this.divMenu.appendChild(this.#divApp);
+        this.divMenu.setAttribute('id',`Menu-${kernel.os}`);
 
         switch (kernel.os){
             case 'mac':
-                this.divMenu.classList.add('acrilico','launchpad');
+                this.divMenu.classList.add('acrilico');
                 break;
             case 'linux':
                 this.divMenu.insertBefore(this.#divApp,this.#divVar);
