@@ -1,7 +1,7 @@
 import { Vanie , globalVanie } from 'vanie';
 import Aplicacion from '../Sistema/Aplicacion'
-import { _div, elegirNodo, imagen, link, moldeBipanel, moldeElemento, parrafo, txt } from '../Data/moldes'
-import { icoOs , ico, url} from '../Data/iconos';
+import { _div, elegirNodo, imagen, link, moldeBipanel, moldeElemento, moldeTitulo, parrafo, txt } from '../Data/moldes'
+import icon, { icoOs , ico, url} from '../Data/iconos';
 import kernel from '../Sistema/Kernel';
 
 const icoVB = {
@@ -10,12 +10,17 @@ const icoVB = {
     flecha:"./recursos/iconos/flechita.png",
     claro:"./recursos/iconos/claro.png",
     oscuro:"./recursos/iconos/oscuro.png",
+    sistema:"./recursos/iconos/sistema24x24.png",
+    general:"./recursos/iconos/compu24x24.png",
+    pantalla:"./recursos/iconos/pantalla24x24.png",
+    red:"./recursos/iconos/red24x24.png",
+    carpeta:"./recursos/iconos/archivos24x24.png"
 }
 
 export default class Vbox{
     #app= new Aplicacion(Vbox.comando,'Virtual box',this.ico,this);
     #ventana = new Vanie;
-    #panelIzq; #panelDer; #listaIzq = ['Herramientas','mac','windows','linux']; #idxSys = 0;#idxSysSel = 0;
+    #panelIzq; #panelDer; #listaIzq = ['Herramientas',...kernel.sistemas]; #idxSys = 0;#idxSysSel = 0;
 
     static get comando(){return 'VBoxManage';}
     get ico(){return './recursos/iconos/vitual box.png';}
@@ -129,14 +134,19 @@ export default class Vbox{
             parrafo('Este portafolio web está inspirado en la estética de los tres sistemas operativos más utilizados: Windows, Linux y Mac. Fue construido utilizando HTML, CSS y JavaScript, sin recurrir a ningún framework.'),
             parrafo('Las únicas librerías empleadas fueron Vanie y Nauty, ambas creadas por mí y disponibles en npm. Vanie es una librería destinada a la creación y gestión de ventanas arrastrables (draggables), mientras que Nauty se encarga del manejo de coordenadas y transformaciones en un plano 2D.')));
         sup.appendChild(imagen('https://i.ibb.co/gyFR3Xr/estrlla-rota-ld-2.jpg'));
-        const vanie_a = link(url.vanie,imagen('https://i.ibb.co/r2RFbVP/perfil-vanie-1.png'));
-        const nauty_a = link(url.nauty,imagen('https://i.ibb.co/NT0X9Yr/perfil-nauty.png'));
+        const vanie_a = link(url.vanie,imagen(icon('vanie')));
+        const nauty_a = link(url.nauty,imagen(icon('nauty')));
         sup.appendChild(_div(txt('Construido con:'),imagen(ico.html),imagen(ico.css),imagen(ico.js),vanie_a,nauty_a));}
 
     #panelDerechoInf(inf){
         inf.classList.add('vb-der-inf',globalVanie.globalClass('animacion'));
-        inf.appendChild(txt(this.#obtenerNavegador()));
-        inf.appendChild(txt(this.#obtenerOS()));}
+        const info = (img,titulo,textoIzq,textoDer)=> _div(_div(imagen(icoVB[img]),txt(titulo)),_div(_div(...textoIzq.map(string=>txt(string))),_div(...textoDer.map(string=>txt(string)))));
+        inf.appendChild(info('general',"General",['Navegador:','Sistema Operativo:'],[this.#obtenerNavegador(),this.#obtenerOS()]));
+        const mem = navigator.deviceMemory;
+        inf.appendChild(info('sistema','Sistema',['Memoria:','Orden de arranque:','Aceleracion'],[`${mem?`${mem*1024} MB`:'Desconocido'}`,'Web','Ninguna']));
+        inf.appendChild(info('pantalla','Pantalla',['Resolución:','Servidor de escritorio remoto:','Grabación:'],[`${document.body.offsetWidth} x ${document.body.offsetHeight}`,'Inhabilitado','Inhabilitado']));
+        inf.appendChild(info('red','Red',['Velocidad de carga de esta pagina:'],['Desconocido']));
+        inf.appendChild(info('carpeta','Carpetas Compartidas',['Ninguno'],['']))}
 
     #obtenerNavegador(){
         const userAgent = navigator.userAgent;

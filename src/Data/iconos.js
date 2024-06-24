@@ -57,7 +57,9 @@ const ico = {
     c:'https://i.ibb.co/1Q10GFX/C.png',
     cpp:'https://i.ibb.co/hd3yP7D/C.png',
     py:'https://cdn.icon-icons.com/icons2/2699/PNG/512/python_logo_icon_168886.png',
-    github:'https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png'
+    github:'https://cdn.icon-icons.com/icons2/936/PNG/512/github-logo_icon-icons.com_73546.png',
+    vanie:'https://i.ibb.co/r2RFbVP/perfil-vanie-1.png',
+    nauty:'https://i.ibb.co/NT0X9Yr/perfil-nauty.png'
 }
 
 const icoOs = {
