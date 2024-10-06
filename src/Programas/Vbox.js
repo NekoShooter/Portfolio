@@ -82,9 +82,12 @@ export default class Vbox{
     #correrOs(indice,onoff){
         if(!indice) return;
         const selecion =  this.#panelIzq.childNodes[indice];
+        const os = this.#listaIzq[indice]
         const [img , span] = selecion.childNodes[1].childNodes[1].firstChild.childNodes;
         img.setAttribute('src',onoff ? icoVB.flecha : icoVB.off );
-        span.innerText = onoff ? 'Corriendo' : 'Apagada';}
+        span.innerText = onoff ? 'Corriendo' : 'Apagada';
+        console.log(os);
+        if(onoff) kernel.SistemaOperativo(os);}
     
 
     #seleccionarCelda(indice){
@@ -145,7 +148,7 @@ export default class Vbox{
         const mem = navigator.deviceMemory;
         inf.appendChild(info('sistema','Sistema',['Memoria:','Orden de arranque:','Aceleracion'],[`${mem?`${mem*1024} MB`:'Desconocido'}`,'Web','Ninguna']));
         inf.appendChild(info('pantalla','Pantalla',['Resolución:','Servidor de escritorio remoto:','Grabación:'],[`${document.body.offsetWidth} x ${document.body.offsetHeight}`,'Inhabilitado','Inhabilitado']));
-        inf.appendChild(info('red','Red',['Velocidad de carga de esta pagina:'],['Desconocido']));
+        inf.appendChild(info('red','Red',['Velocidad de carga:'],[`${kernel.tiempoDeArranque} ms`]));
         inf.appendChild(info('carpeta','Carpetas Compartidas',['Ninguno'],['']))}
 
     #obtenerNavegador(){

@@ -1,9 +1,11 @@
 import { globalVanie } from "vanie";
 import BarraMac from "./DockMac";
+import Dock from "./Dock";
 import Ruta from "./Ruta";
 
 class Kernel{
     #os;
+    #boolOs = [false,false,false]
     #tema;
     #esTemaOscuro = false;
     #dock;
@@ -33,7 +35,8 @@ class Kernel{
             });
             globalVanie.conectarseA(this.#escritorio);
         if(!globalVanie.padre) throw('error al asignar el escritorio');
-        this.#estilar();
+        //this.#estilar();
+        this.#asignarClaseEscritorio();
         return this;}
 
     bloquearEscritorio(boleano){
@@ -51,11 +54,7 @@ class Kernel{
         if(ocultar)
             this.miniaturasVisible.ocultarMiniaturas();}
 
-    #estilar(){
-        if(this.esMac && this.#escritorio){
-            this.#escritorio.style.display = 'flex';
-            this.#escritorio.style.alignItems ='end';
-            this.#escritorio.style.justifyContent = 'center';}}
+    #asignarClaseEscritorio(){this.#escritorio.setAttribute('class','escritorio-'+kernel.os);}
 
     get capturadoras(){return this.#capturadoras;}
 
@@ -96,7 +95,9 @@ class Kernel{
     #crearDock(){
         if(this.#dock || !this.#contenedorDock || !this.#os) return;
             
-        this.#dock = new {mac:BarraMac}[this.#os](this.#contenedorDock,this.data);}
+        //this.#dock = new {mac:BarraMac}[this.#os](this.#contenedorDock,this.data);
+        this.#dock=new Dock(this.#contenedorDock,this.data);
+    }
 
     SistemaOperativo(os){
         if(this.#os != os && typeof os == 'string' && this.sistemas.includes(os)){
@@ -106,11 +107,13 @@ class Kernel{
                 this.#tema = this.#esTemaOscuro ? 'oscuro':'claro';
                 if(this.#esTemaOscuro) document.body.classList.add('dark-theme');}
             this.#os = os;
+            this.#boolOs = [os == 'windows',os == 'linux', os == 'mac'];
             globalVanie.establecerBase(this.#os + '-' + this.#tema);
-            
-            if(this.#dock) this.#dock = undefined;
-            this.#estilar();
-            this.#crearDock();}
+            //this.#estilar();
+            this.#asignarClaseEscritorio();
+            if(!this.#dock){
+                this.#crearDock();}
+            }
             
         return this;}
 
@@ -124,6 +127,10 @@ class Kernel{
         }
         return this;}
 
+    registrarTiempo(ms){
+        this.tiempoDeArranque = Date.now() - ms;
+        return this;}
+
     get tema(){return this.#tema??'';}
     get temaOscuro(){return this.#esTemaOscuro;}
     get inversoTema(){return {oscuro:'claro', claro:'oscuro'}[this.#tema]};
@@ -135,9 +142,9 @@ class Kernel{
     get dockValido(){return this.#dock && this.#contenedorDock;}
     get ok(){return this.sistemaValido && this.dockValido}
 
-    get esLinux(){return this.#os == 'linux'}
-    get esMac(){return this.#os == 'mac'}
-    get esWindows(){return this.#os == 'windows'}
+    get esLinux(){return this.#boolOs[1]}
+    get esMac(){return this.#boolOs[2]}
+    get esWindows(){return this.#boolOs[0]}
 }
 
 const kernel = new Kernel;

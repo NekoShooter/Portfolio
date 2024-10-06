@@ -73,8 +73,8 @@ export default class Capturadora{
             this.removerCaptura(identificador);});
 
         if(kernel.esMac){
-            contenedorTitulo.classList.add('acrilico');
-            btn.firstChild.classList.add('acrilico');}     
+            contenedorTitulo.classList.add('acrilicoBlack');
+            btn.firstChild.classList.add('acrilicoBlack');}     
         frame.appendChild(btn);
         frame.appendChild(miniatura);
         return frame;}

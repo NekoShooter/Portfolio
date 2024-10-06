@@ -1,3 +1,5 @@
+const tiempo = Date.now();
+
 import kernel from "./src/Sistema/Kernel";
 import Menu from "./src/Programas/Menu";
 import Folder from "./src/Programas/Folder";
@@ -6,7 +8,7 @@ import Vbox from "./src/Programas/Vbox";
 import cargarFicheros from "./src/Sistema/Ficheros";
 
 window.addEventListener('load',()=>{
-    kernel.escritorio('escritorio').SistemaOperativo('mac').dock('dock');
+    kernel.escritorio('escritorio').SistemaOperativo('mac').dock('dock').registrarTiempo(tiempo);
     new Menu;
     new Folder;
     new vsCode;
